@@ -6,6 +6,12 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+KEYWORDS = [
+'格子'
+]
+DOWNLOADER_MIDDLEWARES = {
+   'picsart_spider.middlewares.ChromeDownloaderMiddleware': 543,
+}
 
 BOT_NAME = 'picsart_spider'
 
@@ -17,7 +23,7 @@ NEWSPIDER_MODULE = 'picsart_spider.spiders'
 #USER_AGENT = 'picsart_spider (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
