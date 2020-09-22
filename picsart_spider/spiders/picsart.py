@@ -7,7 +7,8 @@ from bs4 import BeautifulSoup
 import urllib
 from urllib.request import urlretrieve
 import re
-
+import time
+from furl import furl
 
 class PicsartSpider(scrapy.Spider):
     name = 'picsart'
@@ -15,6 +16,7 @@ class PicsartSpider(scrapy.Spider):
     base_url = 'https://picsart.com/search/stickers?q='
     file_path = '/Users/wecut145/Python/picsart_spider/downloadPics/'
     downloading_path = ''
+    keyword = ''
     def start_requests(self):
         for keyword in self.settings.get('KEYWORDS'):
             #创建文件夹
@@ -28,13 +30,29 @@ class PicsartSpider(scrapy.Spider):
 
     def parse(self, response):
         print('Begin parse', response.url)
+        url = furl(response.url)
+        keyword = url.args['q']
         soup = BeautifulSoup(response.body, 'html.parser')
         imgwarps = soup.find_all("div", class_="img-wrapper pa-ratio-1-1")
         for item in imgwarps:
             image_url = item.img.get('src')
             if(image_url!=''):
                 image_url = image_url.replace('?type=webp&to=min&r=240','?type=png&to=min&r=640')
-                self.fileDownload(image_url, self.downloading_path)
+                #下载文件
+#                 self.fileDownload(image_url, self.file_path+keyword)
+                #收集文件路径
+                self.writeImgUrlToTxt(image_url,keyword)
+
+    def writeImgUrlToTxt(self,image_url,keyword):
+        imageUrlTxtPath = self.file_path+'imageUrlTxt'
+        folder = os.path.exists(imageUrlTxtPath)
+        if not folder:                   #判断是否存在文件夹如果不存在则创建为文件夹
+            os.makedirs(imageUrlTxtPath)
+        my_open = open(imageUrlTxtPath+"/"+ keyword +'.txt', 'a')
+        #若文件不存在,创建，若存在，追加
+        my_open.write(image_url+'\n')
+        my_open.close()
+
 
     def fileDownload(self,image_url, download_path):
         file_name = os.path.basename(image_url);
