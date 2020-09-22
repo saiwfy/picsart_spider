@@ -58,13 +58,18 @@ class ChromeDownloaderMiddleware(object):
             seeMoreDivSelector = '#pjax-container > div.search-result-container > div > div.load-more-btn-container > div'
             seeMoreDiv = self.driver.find_element_by_css_selector(seeMoreDivSelector)
             seeMoreDivDisplay = seeMoreDiv.is_displayed()
-#             while(seeMoreDivDisplay):
-#                 sleep(5)
-#                 seeMoreDivDisplay = seeMoreDiv.is_displayed()
-#                 if(seeMoreDivDisplay):
-#                     submit = self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#pjax-container > div.search-result-container > div > div.load-more-btn-container > div > a')))
-#                     submit.click()
-#                     print('seeMoreDivDisplay',seeMoreDivDisplay)
+            pageNum = 1
+            while(seeMoreDivDisplay):
+                sleep(4)
+                seeMoreDivDisplay = seeMoreDiv.is_displayed()
+                if(seeMoreDivDisplay):
+                    submit = self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#pjax-container > div.search-result-container > div > div.load-more-btn-container > div > a')))
+                    submit.click()
+                    print('seeMoreDivDisplay',seeMoreDivDisplay)
+                    print('pageNum',pageNum)
+                    pageNum = pageNum+1
+                    if(pageNum>30):
+                        seeMoreDivDisplay = False
 
             return HtmlResponse(url=request.url, body=self.driver.page_source, request=request, encoding='utf-8',
                                 status=200)  # 返回HTML数据

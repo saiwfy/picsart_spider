@@ -7,28 +7,32 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 KEYWORDS = [
-'格子',
-'lv',
+# '格子',
+# 'lv',
 # 'gucci',
 # 'chanel',
 # '涂鸦',
 # '动漫',
 # '联名',
 # 'blackpink',
+#------------
 # 'lisa',
 # '漫威',
 # '哈利波特',
 # 'hello kitty',
+#-------------以下只获取40页
 # '潮牌logo',
 # '中文',
 # '英文',
 # '日文',
+#-----------------
 # 'burberry',
 # 'prada',
 # 'balenciaga',
 # 'nike',
 # 'adidas',
 # 'vans',
+#--------------
 # 'puma',
 # 'converse',
 # 'superme',
@@ -40,6 +44,7 @@ KEYWORDS = [
 # 'logo',
 # '复古',
 # '蕾丝',
+#-----------以下只爬30页
 # '蝴蝶',
 # '玫瑰',
 # '蒸汽波',
