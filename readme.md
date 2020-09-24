@@ -1,5 +1,13 @@
-## picsar爬虫
-抓取关键字：
+## picsart爬虫
+### 命令
+- scrapy crawl picsart  
+
+### 用法
+1. 在settings.py中填写关键字
+2. 执行命令可以抓取对应图片url到txt中
+3. 使用迅雷下载图片
+
+### 抓取关键字：
 格子
 lv
 gucci

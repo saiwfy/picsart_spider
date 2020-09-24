@@ -14,27 +14,28 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from time import sleep
 
-
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
 
+
 class ChromeDownloaderMiddleware(object):
 
-    def __init__(self,timeout=30, service_args=[]):
+    def __init__(self, timeout=30, service_args=[]):
         options = webdriver.ChromeOptions()
         self.timeout = timeout
-        #谷歌无头模式
+        # 谷歌无头模式
         options.add_argument('--headless')
         options.add_argument('--disable-gpu')
         options.add_argument('window-size=1200x600')
         # 设置中文
         options.add_argument('lang=zh_CN.UTF-8')
         # 更换头部
-        options.add_argument('user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"')
+        options.add_argument(
+            'user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"')
         prefs = {
-          'profile.default_content_setting_values': {
-            'images': 2
-          }
+            'profile.default_content_setting_values': {
+                'images': 2
+            }
         }
         options.add_experimental_option('prefs', prefs)
 
@@ -47,7 +48,6 @@ class ChromeDownloaderMiddleware(object):
 
         self.wait = WebDriverWait(self.driver, self.timeout)
 
-
     def __del__(self):
         self.driver.close()
 
@@ -59,17 +59,18 @@ class ChromeDownloaderMiddleware(object):
             seeMoreDiv = self.driver.find_element_by_css_selector(seeMoreDivSelector)
             seeMoreDivDisplay = seeMoreDiv.is_displayed()
             pageNum = 1
-            while(seeMoreDivDisplay):
-                sleep(4)
+            while (seeMoreDivDisplay):
+                sleep(10)
                 seeMoreDivDisplay = seeMoreDiv.is_displayed()
-                if(seeMoreDivDisplay):
-                    submit = self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#pjax-container > div.search-result-container > div > div.load-more-btn-container > div > a')))
+                if (seeMoreDivDisplay):
+                    submit = self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR,
+                                                                         '#pjax-container > div.search-result-container > div > div.load-more-btn-container > div > a')))
                     submit.click()
-                    print('seeMoreDivDisplay',seeMoreDivDisplay)
-                    print('pageNum',pageNum)
-                    pageNum = pageNum+1
-                    if(pageNum>30):
-                        seeMoreDivDisplay = False
+                    print('seeMoreDivDisplay', seeMoreDivDisplay)
+                    print('pageNum', pageNum)
+                    pageNum = pageNum + 1
+                    # if (pageNum > 30):
+                    #     seeMoreDivDisplay = False
 
             return HtmlResponse(url=request.url, body=self.driver.page_source, request=request, encoding='utf-8',
                                 status=200)  # 返回HTML数据
