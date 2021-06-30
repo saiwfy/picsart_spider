@@ -35,11 +35,13 @@ class PicsartSpider(scrapy.Spider):
         url = furl(response.url)
         keyword = url.args['q']
         soup = BeautifulSoup(response.body, 'html.parser')
-        imgwarps = soup.find_all("div", class_="img-wrapper pa-ratio-1-1")
+        imgwarps = soup.find_all("picture")
+        print("#########")
         for item in imgwarps:
             image_url = item.img.get('src')
             if (image_url != ''):
-                image_url = image_url.replace('?type=webp&to=min&r=240', '?type=png&to=min&r=640')
+                image_url = image_url.replace('?to=fixed&type=webp&r=302x302&q=75', '?type=png&to=min&r=640')
+                image_url = image_url.replace('?to=fixed&type=webp&r=40x40&q=70', '?type=png&to=min&r=640')
                 # 下载文件
                 #                 self.fileDownload(image_url, self.file_path+keyword)
                 # 收集文件路径

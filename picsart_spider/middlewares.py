@@ -57,7 +57,7 @@ class ChromeDownloaderMiddleware(object):
             print('Chrome driver begin...')
             self.driver.get(request.url)  # 获取网页链接内容
             ##__next > div > div.layout-026.main > div > div > div > div.search-result-with-category-024 > button
-            seeMoreDivSelector = '#__next > div > div.layout-026.main > div > div > div > div.search-result-with-category-024 > button'
+            seeMoreDivSelector = '#__next > div > div.layout-row-0-2-6.middle > div > div > div > div.search-result-with-category-loadMoreButtonHolder-0-2-4 > button'
             seeMoreDiv = self.driver.find_element_by_css_selector(seeMoreDivSelector)
             seeMoreDivDisplay = seeMoreDiv.is_displayed()
             pageNum = 1
@@ -66,13 +66,13 @@ class ChromeDownloaderMiddleware(object):
                 seeMoreDivDisplay = seeMoreDiv.is_displayed()
                 if (seeMoreDivDisplay):
                     submit = self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR,
-                                                                         '#__next > div > div.layout-026.main > div > div > div > div.search-result-with-category-024 > button')))
+                                                                         seeMoreDivSelector)))
                     submit.click()
                     print('seeMoreDivDisplay', seeMoreDivDisplay)
                     print('pageNum', pageNum)
                     print('关键字', urllib.parse.unquote(request.url))
                     pageNum = pageNum + 1
-                    if (pageNum > 35):
+                    if (pageNum > 50):
                         seeMoreDivDisplay = False
 
             return HtmlResponse(url=request.url, body=self.driver.page_source, request=request, encoding='utf-8',
